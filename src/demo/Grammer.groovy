@@ -74,3 +74,33 @@ str = 'hello'
 println str
 println str.dump()
 println str.inspect()
+
+//循环
+
+0.upto(2) {print it}
+println ""
+
+3.times {print 'ho '}
+println "Merry Groovy"
+
+//执行svn 命令
+println "svn help".execute().text
+
+println "tasklist".execute().text
+
+//安全导航操作符
+
+def foo(str) {
+    //if(str!=null) str.reverse()
+    str?.reverse()  //等效上述语句
+}
+
+println foo("evil")
+println foo(null)
+
+//异常处理
+
+//groovy 并不特别处理异常,要处理和java一样try catch
+
+
+
