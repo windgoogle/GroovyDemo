@@ -104,3 +104,50 @@ println foo(null)
 
 
 
+//对java5特性的支持
+//自动装箱
+int val=5
+println val.getClass().name
+
+//for-each 循环
+String greetings=["Hello","hi","Howdy"]
+for(String greet :greetings) {
+    println greet
+}
+
+//另一种风格的for-each循环
+for (greet in greetings) {
+    println greet
+}
+//enum
+enum CoffeeSize {SHORT,SMALL,MEDIUM,LARGE,MUG}
+def orderCoffee (size) {
+    print "Coffee oeder recieved for  size  $size : "
+    switch (size) {
+      case [CoffeeSize.SHORT,CoffeeSize.SMALL] :
+          println "you are health conscious"
+          break
+      case CoffeeSize.MEDIUM..CoffeeSize.LARGE :
+          println "you  gotta be a programmer"
+            break
+      case CoffeeSize.MUG :
+          println "you should try Coffeine IV"
+            break
+
+    }
+}
+
+orderCoffee(CoffeeSize.SMALL)
+orderCoffee(CoffeeSize.LARGE)
+orderCoffee(CoffeeSize.MUG)
+
+for (size in CoffeeSize.values()) {
+    println "$size"
+}
+
+//变长参数 (varargs)
+//注解
+//静态导入
+//泛型
+
+
