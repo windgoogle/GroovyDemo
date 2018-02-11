@@ -145,9 +145,52 @@ for (size in CoffeeSize.values()) {
     println "$size"
 }
 
+//带方法和构造函数的枚举
+enum Methodlogies {
+    Evo(5),
+    XP(21),
+    Scrum(3);
+
+    final int daysInIteration
+    Methodlogies(days) {daysInIteration=days}
+
+    def iterationDetails () {
+        println "${this} recommends you $daysInIteration days for iteration"
+    }
+
+}
+
+for (methodlogy in Methodlogies){
+    methodlogy.iterationDetails()
+}
+
 //变长参数 (varargs)
+//以下两个方法均接受数目不等的实参
+def receivedVarArgs (int a,int ...b) {
+    println "You passed $a and $b"
+}
+
+
+def receivedArray (int a,int[] b) {
+    println "You passed $a and $b"
+}
+
+receivedVarArgs(1,2,3,4,5)
+receivedArray(1,2,3,4,5)
+
+int values=[2,3,4,5]
+//receivedVarArgs(1,values)
+//receivedVarArgs(1,[2,3,4,5] as int[])
 //注解
+
 //静态导入
+import static Math.random as rand
+import  groovy.lang.ExpandoMetaClass as EMC
+double value=rand()
+def metaClass=new EMC(Integer)
+assert metaClass.getClass().name=='groovy.lang.ExpandoMetaClass'
+
+
 //泛型
 
 
