@@ -1,5 +1,7 @@
 package demo
 
+import groovy.transform.Canonical
+
 //集合
 
 
@@ -178,7 +180,7 @@ def receivedArray (int a,int[] b) {
 receivedVarArgs(1,2,3,4,5)
 receivedArray(1,2,3,4,5)
 
-int values=[2,3,4,5]
+//int values=[2,3,4,5]
 //receivedVarArgs(1,values)
 //receivedVarArgs(1,[2,3,4,5] as int[])
 //注解
@@ -192,5 +194,116 @@ assert metaClass.getClass().name=='groovy.lang.ExpandoMetaClass'
 
 
 //泛型
+//groovy 的变换
+// demo @Canonical
+import groovy.transform.*
+//toString()
+@Canonical (excludes = "lastName,age")
+class Person {
+    String firstName
+    String lastName
+    int age
+}
+
+def sara=new Person(firstName:"Sara",lastName:"Walker",age:49)
+println sara
 
 
+// demo @Delegate
+
+class Worker {
+    def work () { println "get work done !" }
+    def analyze () {println "analyze ...."}
+    def writeReport() {println "get report written !"}
+}
+
+class Expert {
+   def analyze () {println "expert analysis ...."}
+}
+
+class Manager {
+    @Delegate Expert expert=new Expert()
+    @Delegate Worker worker =new Worker()
+}
+
+def bernie=new Manager()
+bernie.analyze()
+bernie.work()
+bernie.writeReport()
+
+
+//demo @Immutable
+@Immutable
+class CreditCard {
+    String cardNumber
+    int creditLimit
+}
+
+println new CreditCard("400-1111-2222-3333",1000)
+
+//demmo  @Lazy
+class Heavy {
+    def size=10
+    Heavy() {println "Creating Heavy with  $size "}
+}
+
+class AsNeeded {
+    def value
+    @Lazy Heavy heavy1=new Heavy()
+    @Lazy Heavy heavy2=new Heavy(size:value)
+
+    AsNeeded(){println "Create AsNeeded"}
+}
+
+def asNeeded=new AsNeeded(value:1000);
+
+println asNeeded.heavy1.size
+println asNeeded.heavy1.size
+println asNeeded.heavy2.size
+
+//demo @Newify
+
+@Newify([Person,CreditCard])
+def fluentCreate() {
+    println Person.new(firstName: "John",lastName: "Doe",age: 20)
+    println Person(firstName: "John",lastName: "Doe",age: 20)
+    println CreditCard("1234-5678-1234-5678",2000)
+}
+
+fluentCreate()
+
+
+//demo @Singleton
+
+@Singleton(lazy=true)
+class TheUnique{
+   //private TheUnique() {println "Instance Created"}
+    def hello () {println "hello"}
+}
+
+println "Accessing TheUnique"
+println TheUnique.instance.hello()
+//println TheUnique.instance.hello()
+
+class A {
+  boolean equals (other) {
+      println "equals called"
+      false
+  }
+}
+
+class B implements Comparable{
+    boolean equals (other) {
+        println "equals called"
+        false
+    }
+
+    @Override
+    int compareTo(other) {
+        println "compareTo called"
+        0
+    }
+}
+//  ==并不完全是equals
+new A()==new A()
+new B()==new B()
